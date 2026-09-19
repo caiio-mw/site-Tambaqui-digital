@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tambaqui Digital</title>
+  <link rel="stylesheet" href="style.css">
+  <!-- Biblioteca Chart.js necessária para o Gráfico Radar -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
+</head>
+<body>
+
+  <div class="app-container">
+
+    <!-- Topo / Cabeçalho -->
+    <header class="header">
+      <div class="top-bar">
+        <div class="logo" aria-hidden="true">🐟</div>
+        <div class="brand-text">
+          <h1>Tambaqui Digital</h1>
+          <span>Qualidade da água</span>
+        </div>
+      </div>
+
+      <!-- Abas de Navegação -->
+      <nav class="nav-tabs" aria-label="Navegação do aplicativo">
+        <button type="button" id="btn-parametros" class="tab-btn active" onclick="alternarAba('parametros')">Parâmetros</button>
+        <button type="button" id="btn-analise" class="tab-btn" onclick="alternarAba('analise')">Análise</button>
+      </nav>
+    </header>
+
+    <!-- ABA 1: PARÂMETROS -->
+    <main id="aba-parametros">
+      <div class="page-title">
+        <h2>Parâmetros da água</h2>
+        <p>Insira os valores do seu viveiro.</p>
+      </div>
+
+      <form class="form-container" onsubmit="event.preventDefault(); alternarAba('analise');">
+        
+        <div class="card">
+          <label for="input-ph">pH da água</label>
+          <div class="badge-ideal">ℹ️ Ideal: 6,5 - 7,5</div>
+          <div class="input-box">
+            <input type="number" step="0.1" min="0" max="14" id="input-ph" placeholder="Ex: 7,0">
+          </div>
+        </div>
+
+        <div class="card">
+          <label for="input-temp">Temperatura</label>
+          <div class="badge-ideal">ℹ️ Ideal: 24°C - 28°C</div>
+          <div class="input-box">
+            <input type="number" step="0.1" min="0" max="50" id="input-temp" placeholder="Ex: 26">
+            <span class="unit">°C</span>
+          </div>
+        </div>
+
+        <div class="card">
+          <label for="input-turbidez">Turbidez</label>
+          <div class="badge-ideal">ℹ️ Ideal: ≤ 5 NTU</div>
+          <div class="input-box">
+            <input type="number" step="0.1" min="0" id="input-turbidez" placeholder="Ex: 3">
+            <span class="unit">NTU</span>
+          </div>
+        </div>
+
+        <div class="card">
+          <label for="input-amonia">Amônia</label>
+          <div class="badge-ideal">ℹ️ Ideal: ≤ 0,25 mg/L</div>
+          <div class="input-box">
+            <input type="number" step="0.01" min="0" id="input-amonia" placeholder="Ex: 0,1">
+            <span class="unit">mg/L</span>
+          </div>
+        </div>
+
+        <div class="card">
+          <label for="input-nitrito">Nitrito</label>
+          <div class="badge-ideal">ℹ️ Ideal: ≤ 0,1 mg/L</div>
+          <div class="input-box">
+            <input type="number" step="0.01" min="0" id="input-nitrito" placeholder="Ex: 0,05">
+            <span class="unit">mg/L</span>
+          </div>
+        </div>
+
+        <button type="submit" class="btn-submit">Ver análise da água →</button>
+      </form>
+
+      <section class="legend">
+        <h3>LEGENDA DE STATUS</h3>
+        <ul>
+          <li><span class="green">✓ ADEQUADO</span> — Parâmetro dentro do ideal</li>
+          <li><span class="yellow">▲ ATENÇÃO</span> — Parâmetro levemente fora do ideal</li>
+          <li><span class="red">■ CRÍTICO</span> — Requer ação imediata</li>
+          <li><span class="blue">i INFO</span> — Dado não fornecido</li>
+        </ul>
+      </section>
+    </main>
+
+    <!-- ABA 2: ANÁLISE -->
+    <main id="aba-analise" style="display: none;">
+      <div class="page-title">
+        <h2>Análise da Qualidade</h2>
+        <p>Diagnóstico baseado nos parâmetros informados.</p>
+      </div>
+
+      <div class="info-banner">
+        <div class="banner-icon" aria-hidden="true">i</div>
+        <div>
+          <h3 id="banner-title">Aguardando dados</h3>
+          <p id="banner-desc">Preencha os parâmetros na tela anterior para ver a análise completa.</p>
+        </div>
+      </div>
+
+      <!-- Card do Radar de Qualidade -->
+      <section class="chart-card">
+        <div class="chart-header">
+          <h3>Radar de Qualidade</h3>
+          <div class="saude-geral" id="saude-geral-badge">Saúde geral <span id="saude-texto">Atenção • 49%</span></div>
+        </div>
+        <p class="chart-sub">Cada eixo representa um parâmetro (100 = ideal)</p>
+
+        <div class="chart-wrapper">
+          <canvas id="radarChart"></canvas>
+        </div>
+
+        <div class="progress-list" id="progress-list"></div>
+      </section>
+
+      <section id="resultados-cards"></section>
+    </main>
+
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

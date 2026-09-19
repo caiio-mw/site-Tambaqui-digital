@@ -1,0 +1,117 @@
+/* Resets e Layout Base */
+* { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', system-ui, -apple-system, sans-serif; }
+
+body {
+  background: #051d2d radial-gradient(circle at 50% 30%, #0a3652 0%, #051d2d 70%) no-repeat center bottom / cover;
+  background-image: radial-gradient(circle at 50% 30%, #0a3652 0%, #051d2d 70%), url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 320'%3E%3Cpath fill='%230e4b6e' fill-opacity='0.25' d='M0,192L48,176C96,160,192,128,288,138.7C384,149,480,203,576,213.3C672,224,768,192,864,165.3C960,139,1056,117,1152,128C1248,139,1344,181,1392,202.7L1440,224L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z'%3E%3C/path%3E%3C/svg%3E");
+  color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  min-height: 100vh;
+  padding: 20px 0;
+}
+
+/* Flex e Alinhamentos Recorrentes */
+.top-bar, .logo, .nav-tabs, .input-box, .info-banner, .banner-icon, .res-header, .chart-header, .progress-item, .progress-label, .tag {
+  display: flex;
+  align-items: center;
+}
+
+.logo, .banner-icon { justify-content: center; }
+.top-bar, .info-banner, .progress-label, .tag { gap: 8px; }
+.res-header, .chart-header, .progress-item { justify-content: space-between; }
+
+/* Estrutura Principal */
+.app-container {
+  width: 100%;
+  max-width: 440px;
+  background-color: #0b3348;
+  padding: 20px;
+  border-radius: 24px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+}
+
+.logo { background-color: #1a4968; width: 40px; height: 40px; border-radius: 10px; font-size: 20px; }
+.brand-text h1 { font-size: 18px; font-weight: bold; }
+.brand-text span, .page-title p, .chart-sub, .saude-geral { color: #8eb1c7; }
+.brand-text span { font-size: 12px; }
+
+/* Navegação por Abas */
+.nav-tabs { background-color: #062130; padding: 4px; border-radius: 12px; margin-bottom: 24px; }
+.tab-btn { flex: 1; padding: 10px; border: none; background: transparent; color: #8eb1c7; font-weight: bold; border-radius: 8px; cursor: pointer; }
+.tab-btn.active { background-color: #fff; color: #08293a; }
+
+/* Título e Cards de Entrada */
+.page-title h2 { font-size: 20px; margin-bottom: 4px; }
+.page-title p { font-size: 14px; margin-bottom: 20px; }
+.card { background-color: #fff; color: #1a2d3d; border-radius: 16px; padding: 16px; margin-bottom: 16px; }
+.card label { font-weight: bold; font-size: 15px; display: block; margin-bottom: 8px; }
+
+.badge-ideal { background-color: #f0f6fa; color: #2b5b7a; padding: 8px 12px; border-radius: 8px; font-size: 13px; font-weight: 600; margin-bottom: 12px; }
+.input-box { background-color: #f4f8fb; border: 1px solid #dbe6ee; border-radius: 10px; padding: 0 12px; }
+.input-box input { width: 100%; padding: 12px 0; border: none; background: transparent; font-size: 16px; outline: none; }
+.unit { color: #5d7a8c; font-weight: bold; font-size: 14px; margin-left: 8px; }
+
+.btn-submit { width: 100%; padding: 16px; background-color: #e3edf4; color: #0b3348; border: none; border-radius: 12px; font-size: 15px; font-weight: bold; cursor: pointer; margin: 8px 0 24px; }
+
+/* Legenda */
+.legend { background-color: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 16px; padding: 16px; color: #a3c4d9; }
+.legend h3 { font-size: 12px; letter-spacing: 0.5px; margin-bottom: 12px; }
+.legend ul { list-style: none; }
+.legend li { font-size: 13px; margin-bottom: 8px; }
+
+.green, .yellow, .red, .blue { font-weight: bold; }
+.green { color: #00b87c; }
+.yellow { color: #e69d00; }
+.red { color: #d9531e; }
+.blue { color: #52b2ea; }
+
+/* Componentes de Análise */
+.info-banner { background-color: #e3f2fd; color: #1a2d3d; border-radius: 16px; padding: 16px; gap: 12px; margin-bottom: 20px; }
+.banner-icon { background-color: #52b2ea; color: #fff; width: 32px; height: 32px; border-radius: 50%; font-weight: bold; }
+.banner-desc { font-size: 13px; color: #4a6375; }
+
+.chart-card { background-color: #0d3246; border-radius: 16px; padding: 20px; margin-top: 16px; }
+.chart-sub { font-size: 12px; margin-bottom: 12px; }
+.chart-wrapper { position: relative; width: 100%; height: 250px; margin: 15px 0 16px; }
+.chart-wrapper canvas { width: 100% !important; height: 100% !important; }
+.saude-geral { font-size: 13px; }
+.saude-geral span { font-weight: bold; color: #e69d00; }
+
+/* Progresso */
+.progress-list { margin-top: 20px; display: flex; flex-direction: column; gap: 12px; }
+.progress-item { font-size: 13px; }
+.progress-label { width: 130px; font-weight: 500; }
+.progress-bar-bg { flex: 1; height: 8px; background-color: rgba(255, 255, 255, 0.1); border-radius: 10px; margin: 0 12px; overflow: hidden; }
+.progress-bar-fill { height: 100%; border-radius: 10px; }
+.progress-value { font-weight: bold; width: 40px; text-align: right; }
+
+.color-adequado { background-color: #52b2ea; color: #52b2ea; }
+.color-atencao { background-color: #e69d00; color: #e69d00; }
+.color-critico { background-color: #d9531e; color: #d9531e; }
+
+/* Cards de Resultado */
+#resultados-cards { display: flex; flex-direction: column; gap: 16px; margin-top: 20px; }
+
+.res-card { border-radius: 20px; padding: 20px; border: 2px solid; color: #1a1a1a; }
+.res-header .title { font-size: 12px; font-weight: 700; letter-spacing: 0.8px; text-transform: uppercase; color: #6b7280; }
+
+.tag { padding: 6px 14px; border-radius: 20px; font-size: 11px; font-weight: 800; text-transform: uppercase; gap: 4px; }
+.res-val { font-size: 32px; font-weight: 800; margin-bottom: 12px; color: #1a1a1a; }
+.res-val span { font-size: 16px; font-weight: 500; color: #6b7280; }
+.res-title { font-size: 16px; font-weight: 700; margin-bottom: 6px; color: #1a1a1a; }
+.res-desc { font-size: 14px; line-height: 1.45; color: #4b5563; }
+
+/* Status Variantes */
+.res-card.adequado { background-color: #eaf6fc; border-color: #52b2ea; }
+.tag.adequado { background-color: #52b2ea; color: #fff; }
+
+.res-card.atencao { background-color: #fffde6; border-color: #f7d000; }
+.tag.atencao { background-color: #f7d000; color: #1a1a1a; }
+
+.res-card.critico { background-color: #fdeee9; border-color: #e0531c; }
+.tag.critico { background-color: #e0531c; color: #fff; }
+
+.res-card.pendente { background-color: #f3f4f6; border-color: #d1d5db; color: #374151; }
+.tag.pendente { background-color: #9ca3af; color: #fff; }
