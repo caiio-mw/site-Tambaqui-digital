@@ -3,7 +3,7 @@
 > **Projeto de Extensão Universitária** — Faculdade Metropolitana de Manaus (FAMETRO)  
 > *Aplicação web mobile voltada ao monitoramento da qualidade da água em viveiros e tanques para criação de tambaquis e outros peixes.*
 
-[![Acesse o Site](https://img.shields.io/badge/Acessar_Aplicação_Mobile-0070f3?style=for-the-badge&logo=googlechrome&logoColor=white)](https://seu-usuario.github.io/tambaqui-digital/)
+[![Acesse o Site](https://img.shields.io/badge/Acessar_Aplicação_Mobile-0070f3?style=for-the-badge&logo=googlechrome&logoColor=white)](https://site-tambaqui-digital.vercel.app/)
 
 ---
 
