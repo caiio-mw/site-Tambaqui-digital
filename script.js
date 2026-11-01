@@ -258,7 +258,7 @@ async function carregarHistorico() {
   }
 
   try {
-    const resposta = await fetch('http://localhost:3000/medicoes');
+    const resposta = await fetch('https://tambaqui-api.onrender.com/');
     const todasMedicoes = await resposta.json();
 
     // Filtra apenas os registros que pertencem a este device_id
@@ -332,7 +332,7 @@ if (formElement) {
     };
 
     try {
-      const resposta = await fetch('http://localhost:3000/medicoes', {
+      const resposta = await fetch('https://tambaqui-api.onrender.com/', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(novaMedicao)
