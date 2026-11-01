@@ -272,7 +272,13 @@ async function carregarHistorico() {
     let htmlHistorico = '<div class="cards-historico" style="margin-top: 15px;">';
     
     medicoesDesteUsuario.forEach(m => {
-      const dataFormatada = new Date(m.data_hora).toLocaleString('pt-BR');
+      // Cria a data garantindo que o fuso horário seja interpretado corretamente
+const dataObj = new Date(m.data_hora);
+const dataFormatada = dataObj.toLocaleString('pt-BR', {
+  timeZone: 'America/Manaus', 
+  dateStyle: 'short',
+  timeStyle: 'medium'
+});
 
       htmlHistorico += `
         <div class="historico-card" style="background: #1e293b; padding: 15px; margin-bottom: 12px; border-radius: 8px; border-left: 4px solid #52b2ea; color: #fff;">
