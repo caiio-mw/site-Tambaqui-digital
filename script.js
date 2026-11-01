@@ -4,28 +4,39 @@ let meugrafico = null;
 function alternarAba(aba) {
   const abaParametros = document.getElementById('aba-parametros');
   const abaAnalise = document.getElementById('aba-analise');
+  const abaHistorico = document.getElementById('aba-historico');
+  
   const btnParametros = document.getElementById('btn-parametros');
   const btnAnalise = document.getElementById('btn-analise');
+  const btnHistorico = document.getElementById('btn-historico');
 
+  // Esconde todas as abas e remove a classe active de todos os botões
+  if (abaParametros) abaParametros.style.display = 'none';
+  if (abaAnalise) abaAnalise.style.display = 'none';
+  if (abaHistorico) abaHistorico.style.display = 'none';
+
+  if (btnParametros) btnParametros.classList.remove('active');
+  if (btnAnalise) btnAnalise.classList.remove('active');
+  if (btnHistorico) btnHistorico.classList.remove('active');
+
+  // Mostra apenas a aba selecionada e ativa o botão correspondente
   if (aba === 'parametros') {
     if (abaParametros) abaParametros.style.display = 'block';
-    if (abaAnalise) abaAnalise.style.display = 'none';
     if (btnParametros) btnParametros.classList.add('active');
-    if (btnAnalise) btnAnalise.classList.remove('active');
-  } else {
-    if (abaParametros) abaParametros.style.display = 'none';
+  } else if (aba === 'analise') {
     if (abaAnalise) abaAnalise.style.display = 'block';
     if (btnAnalise) btnAnalise.classList.add('active');
-    if (btnParametros) btnParametros.classList.remove('active');
-    
     setTimeout(() => {
       gerarAnalise();
     }, 50);
+  } else if (aba === 'historico') {
+    if (abaHistorico) abaHistorico.style.display = 'block';
+    if (btnHistorico) btnHistorico.classList.add('active');
+    carregarHistorico(); // Carrega o histórico filtrado deste aparelho ao abrir a aba
   }
 }
 
 function calcularScore(val, nome) {
-  // Se o campo não foi preenchido
   if (isNaN(val)) {
     return { 
       score: 0, 
@@ -38,11 +49,6 @@ function calcularScore(val, nome) {
   }
 
   let status, icone, cor, score, titulo, desc;
-
-  // Paleta Acessível (Daltonismo):
-  // Adequado: Azul Claro (#52b2ea)
-  // Atenção: Amarelo Âmbar (#f7d000)
-  // Crítico: Laranja Avermelhado (#e0531c)
 
   if (nome === 'pH da Água') {
     if (val >= 6.5 && val <= 7.5) {
@@ -154,7 +160,7 @@ function gerarAnalise() {
     } else if (calc.status === 'critico') {
       tagTexto = '■ CRÍTICO';
     } else {
-      tagTexto = '• SEM DADOS';
+      tagTexto = 'SEM DADOS';
     }
 
     cardsHTML += `
@@ -235,6 +241,106 @@ function desenharRadar(dados, coresPontos) {
       plugins: { 
         legend: { display: false } 
       }
+    }
+  });
+}
+
+// Função para buscar o histórico filtrado pelo ID deste aparelho
+async function carregarHistorico() {
+  const containerHistorico = document.getElementById('lista-historico');
+  if (!containerHistorico) return;
+
+  // Recupera ou cria o ID único deste navegador
+  let meuDispositivoId = localStorage.getItem('tambaqui_device_id');
+  if (!meuDispositivoId) {
+    meuDispositivoId = 'user_' + Math.random().toString(36).substring(2, 9);
+    localStorage.setItem('tambaqui_device_id', meuDispositivoId);
+  }
+
+  try {
+    const resposta = await fetch('http://localhost:3000/medicoes');
+    const todasMedicoes = await resposta.json();
+
+    // Filtra apenas os registros que pertencem a este device_id
+    const medicoesDesteUsuario = todasMedicoes.filter(m => m.device_id === meuDispositivoId);
+
+    if (medicoesDesteUsuario.length === 0) {
+      containerHistorico.innerHTML = '<p style="color: #8eb1c7; text-align: center; padding: 20px;">Nenhuma medição salva neste aparelho.</p>';
+      return;
+    }
+
+    let htmlHistorico = '<div class="cards-historico" style="margin-top: 15px;">';
+    
+    medicoesDesteUsuario.forEach(m => {
+      const dataFormatada = new Date(m.data_hora).toLocaleString('pt-BR');
+
+      htmlHistorico += `
+        <div class="historico-card" style="background: #1e293b; padding: 15px; margin-bottom: 12px; border-radius: 8px; border-left: 4px solid #52b2ea; color: #fff;">
+          <div style="display: flex; justify-content: space-between; margin-bottom: 6px;">
+            <strong style="color: #52b2ea;">${m.viveiro || 'Viveiro 01'}</strong> 
+            <small style="color: #9ca3af;">${dataFormatada}</small>
+          </div>
+          <div style="font-size: 0.9rem; display: grid; grid-template-columns: repeat(auto-fit, minmax(110px, 1fr)); gap: 5px;">
+            <span>pH: <b>${m.ph}</b></span>
+            <span>Temp: <b>${m.temperatura}°C</b></span>
+            <span>Turbidez: <b>${m.turbidez} NTU</b></span>
+            <span>Amônia: <b>${m.amonia} mg/L</b></span>
+            <span>Nitrito: <b>${m.nitrito} mg/L</b></span>
+          </div>
+        </div>
+      `;
+    });
+
+    htmlHistorico += '</div>';
+    containerHistorico.innerHTML = htmlHistorico;
+
+  } catch (erro) {
+    console.error('Erro ao carregar histórico:', erro);
+    containerHistorico.innerHTML = '<p style="color: #e0531c; text-align: center; padding: 20px;">Erro ao carregar o histórico do servidor.</p>';
+  }
+}
+
+// Intercepta o envio do formulário, envia o device_id e muda para a aba de análise
+const formElement = document.querySelector('.form-container');
+
+if (formElement) {
+  formElement.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    // Garante que o navegador tem um ID único gerado
+    let meuDispositivoId = localStorage.getItem('tambaqui_device_id');
+    if (!meuDispositivoId) {
+      meuDispositivoId = 'user_' + Math.random().toString(36).substring(2, 9);
+      localStorage.setItem('tambaqui_device_id', meuDispositivoId);
+    }
+
+    const novaMedicao = {
+      viveiro: document.getElementById('input-viveiro').value || "Viveiro 01",
+      ph: parseFloat(document.getElementById('input-ph').value),
+      temperatura: parseFloat(document.getElementById('input-temp').value),
+      oxigenio: 5.8, 
+      amonia: parseFloat(document.getElementById('input-amonia').value),
+      nitrito: parseFloat(document.getElementById('input-nitrito').value),
+      turbidez: parseFloat(document.getElementById('input-turbidez').value),
+      device_id: meuDispositivoId // Envia o ID único do aparelho para o backend
+    };
+
+    try {
+      const resposta = await fetch('http://localhost:3000/medicoes', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(novaMedicao)
+      });
+
+      if (resposta.ok) {
+        console.log('Medição salva com sucesso!');
+        alternarAba('analise');
+      } else {
+        alert('Erro ao salvar a medição na API.');
+      }
+    } catch (erro) {
+      console.error('Erro de conexão com o backend:', erro);
+      alert('Não foi possível conectar ao servidor da API na porta 3000.');
     }
   });
 }
