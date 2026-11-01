@@ -37,9 +37,13 @@ app.post('/medicoes', async (req, res) => {
             mensagem: "Medição cadastrada com sucesso!",
             dados: novoRegistro.rows[0]
         });
-    } catch (erro) {
+    }  catch (erro) {
         console.error("Erro ao salvar medição:", erro);
-        res.status(500).json({ erro: "Erro interno ao salvar a medição no banco de dados." });
+        // Devolve o erro detalhado do PostgreSQL para vermos na tela
+        res.status(500).json({ 
+            erro: "Erro interno ao salvar a medição no banco de dados.", 
+            detalhe: erro.message 
+        });
     }
 });
 
