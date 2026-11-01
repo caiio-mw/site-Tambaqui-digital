@@ -275,7 +275,7 @@ async function carregarHistorico() {
       // Cria a data garantindo que o fuso horário seja interpretado corretamente
 const dataObj = new Date(m.data_hora);
 const dataFormatada = dataObj.toLocaleString('pt-BR', {
-  timeZone: 'America/Manaus', 
+  timeZone: 'UTC', // Usa UTC para respeitar exatamente o valor guardado pelo backend
   dateStyle: 'short',
   timeStyle: 'medium'
 });
