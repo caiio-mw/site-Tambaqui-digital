@@ -21,16 +21,16 @@ app.get('/medicoes', async (req, res) => {
 
 // Rota POST: Cadastrar uma nova medição enviada pelo front-end incluindo o device_id
 app.post('/medicoes', async (req, res) => {
-    const { viveiro, ph, temperatura, oxigenio, amonia, nitrito, turbidez, device_id } = req.body;
+    const { viveiro, ph, temperatura, amonia, nitrito, turbidez, device_id } = req.body;
 
     try {
         const querySQL = `
-            INSERT INTO medicoes (viveiro, ph, temperatura, oxigenio, amonia, nitrito, turbidez, device_id) 
-            VALUES ($1, $2, $3, $4, $5, $6, $7, $8) 
+            INSERT INTO medicoes (viveiro, ph, temperatura, amonia, nitrito, turbidez, device_id) 
+            VALUES ($1, $2, $3, $4, $5, $6, $7) 
             RETURNING *;
         `;
         
-        const valores = [viveiro, ph, temperatura, oxigenio, amonia, nitrito, turbidez, device_id];
+        const valores = [viveiro, ph, temperatura, amonia, nitrito, turbidez, device_id];
         const novoRegistro = await pool.query(querySQL, valores);
 
         res.status(201).json({
